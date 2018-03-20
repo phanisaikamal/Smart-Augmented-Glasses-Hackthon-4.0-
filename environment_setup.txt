@@ -1,0 +1,48 @@
+sudo apt-get update
+sudo apt-get upgrade
+sudo raspi-config (enable ssh and vnc)
+sudo apt-get install build-essential
+sudo apt-get install cmake git libgtk2.0-dev pkg-config libavcodec-dev libavformat-dev libswscale-dev
+sudo apt-get install libjpeg-dev libtiff5-dev libjasper-dev libpng12-dev
+sudo apt-get install libv4l-dev
+sudo apt-get install libxvidcore-dev libx264-dev
+sudo apt-get install libatlas-base-dev gfortran
+sudo apt-get install python2.7-dev python3-dev
+sudo apt-get install python-dev python-numpy libtbb2 libtbb-dev libpng-dev libtiff-dev libdc1394-22-dev
+cd ~
+wget -O opencv-2.4.13.zip https://sourceforge.net/projects/opencvlibrary/files/opencv-unix/2.4.13/opencv-2.4.13.zip/download
+unzip opencv-2.4.13.zip
+cd ~
+wget https://bootstrap.pypa.io/get-pip.py
+sudo python get-pip.py
+sudo pip install virtualenv virtualenvwrapper
+sudo rm -rf ~/get-pip.py ~/.cache/pip
+export WORKON_HOME=$HOME/.virtualenvs
+source /usr/local/bin/virtualenvwrapper.sh
+source ~/.profile
+mkvirtualenv cv
+sudo apt-get install python2.7-dev
+pip install numpy
+cd opencv-2.4.13
+mkdir build
+cd build
+cmake -D CMAKE_BUILD_TYPE=RELEASE -D CMAKE_INSTALL_PREFIX=/usr/local -D BUILD_NEW_PYTHON_SUPPORT=ON -D INSTALL_C_EXAMPLES=ON -D INSTALL_PYTHON_EXAMPLES=ON  -D BUILD_EXAMPLES=ON ..
+make -j4 (speed up by doing 4 jobs at a time)
+sudo make install
+sudo ldconfig
+cd ~/.virtualenvs/cv/lib/python2.7/site-packages/
+ln -s /usr/local/lib/python2.7/site-packages/cv2.so cv2.so
+
+update bashrc file
+nano ~/.bashrc
+
+add at last
+# virtualenv and virtualenvwrapper
+export WORKON_HOME=$HOME/.virtualenvs
+source /usr/local/bin/virtualenvwrapper.sh
+workon cv
+
+ctrl+o write
+ctrl+x exit
+alt+a append
+
